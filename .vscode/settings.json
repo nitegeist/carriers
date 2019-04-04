@@ -1,0 +1,11 @@
+{
+  "npm-scripts.showStartNotification": false,
+  "spellright.language": [
+    "en"
+  ],
+  "spellright.documentTypes": [
+    "markdown",
+    "latex",
+    "plaintext"
+  ]
+}
