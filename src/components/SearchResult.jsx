@@ -12,28 +12,28 @@ const SearchResult = ({ carriers }) => {
       <td>{carrier.Address.Phone}</td>
       <td>{carrier.Address.Email}</td>
       <td>{carrier.MCNum}</td>
-      <td>{carrier.Status}</td>
     </tr>
   ));
   return (
-    <div className="col-md-10 m-auto">
-      <h4 className="mb-4">Here's what we found!</h4>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Street</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Zip Code</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Motor Carrier Number</th>
-            <th>Status</th>
-          </tr>
-          {results}
-        </thead>
-      </table>
+    <div className="card shadow-sm col-md-10 m-auto">
+      <div className="card-body">
+        <h4 className="mb-4">Here's what we found!</h4>
+        <table className="table table-striped table-bordered">
+          <thead className="thead-light">
+            <tr>
+              <th>Name</th>
+              <th>Street</th>
+              <th>City</th>
+              <th>State</th>
+              <th>Zip Code</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Motor Carrier Number</th>
+            </tr>
+          </thead>
+          <tbody>{results}</tbody>
+        </table>
+      </div>
     </div>
   );
 };
