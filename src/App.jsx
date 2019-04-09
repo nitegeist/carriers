@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Token, apiUrl } from './config';
 import './App.css';
+import axios from 'axios';
+import { Token, apiUrl, apiKey } from './config';
 import SearchForm from './components/SearchForm';
 import SearchResult from './components/SearchResult';
 
@@ -22,7 +22,10 @@ class App extends Component {
     const getAddresses = async () => {
       const data = location.split(',');
       try {
-        const result = await axios.post('/QueryAddresses', { data, radius });
+        const result = await axios.post(
+          `http://www.mapquestapi.com/search/v2/radius?key=${apiKey}`,
+          { data, radius }
+        );
         return result;
       } catch (err) {
         if (err) {
@@ -31,28 +34,30 @@ class App extends Component {
       }
     };
 
-    const getCarriers = async () => {
-      const addressData = await getAddresses();
-      const addresses = addressData;
-      const result = await axios
-        .post(
-          apiUrl,
-          {
-            addresses,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Basic ${Token}`,
-            },
-          }
-        )
-        .then(res => this.setState({ carriers: res.data }))
-        .catch(err => console.log(err));
-      return result;
-    };
+    getAddresses();
 
-    getCarriers();
+    // const getCarriers = async () => {
+    //   const addressData = await getAddresses();
+    //   const addresses = addressData;
+    //   const result = await axios
+    //     .post(
+    //       apiUrl,
+    //       {
+    //         addresses,
+    //       },
+    //       {
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //           Authorization: `Basic ${Token}`,
+    //         },
+    //       }
+    //     )
+    //     .then(res => this.setState({ carriers: res.data }))
+    //     .catch(err => console.log(err));
+    //   return result;
+    // };
+
+    // getCarriers();
   };
 
   handleChange = e => {

@@ -17,7 +17,7 @@ const SearchResult = ({ carriers }) => {
   return (
     <div className="card shadow-sm col-md-10 m-auto">
       <div className="card-body">
-        <h4 className="mb-4">Here's what we found!</h4>
+        <h4 className="mb-4 display-4">Here's what we found!</h4>
         <table className="table table-striped table-bordered">
           <thead className="thead-light">
             <tr>

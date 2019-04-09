@@ -7,16 +7,16 @@ const SearchForm = ({ radius, location, handleChange, handleSubmit }) => (
     <div className="div container">
       <div className="row">
         <div className="col-md-8 m-auto">
-          <h1 className="display-5 text-center">Search for Carriers</h1>
           <p className="lead text center">
-            Let's find some carriers in your area.
+            Let's find some carriers in your location.
           </p>
           <div className="card shadow-sm mb-5 mt-5">
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <TextFieldGroup
-                  placeholder="Eg: Clear Lake MN,Brooklyn Park MN,New Hope MN"
+                  placeholder="Start Searching..."
                   name="location"
+                  id="location"
                   value={location}
                   onChange={handleChange}
                   // required
