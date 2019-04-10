@@ -71,7 +71,7 @@ the given API Endpoint.
 
 **`"Addresses": ["Clear Lake MN", "Brooklyn Park MN", "New Hope, MN"]`**
 
-This would then return a list of Carriers for the given addresses. I considered where this list of addresses was coming from,
+This would then return a list of carriers for the given addresses. I considered where this list of addresses was coming from,
 and also how to use the `radius` input as it was not part of this **`POST`** request. While doing this, I built the application using the aforementioned technologies and laid out the API calls as I had them in my head. I first made a pseudo **`GET`** request which would go to
 an endpoint `/QueryAddresses` and return the inputted addresses after the call failed, then pass the inputs to the given API Endpoint
 and retrieve the list of carriers.
