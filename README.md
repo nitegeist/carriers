@@ -10,9 +10,9 @@ This scenario was done as a test for [Avantmark Technologies](https://avantmark.
 
 ## Getting Started
 
-### Install Node Package Manager
+### Install [Node.js](https://nodejs.org/en/)
 
-This application uses packages from the Node Package Manager (npm) and will not work without them.
+This application uses packages from the Node Package Manager (npm) and Node.js and will not work without them.
 
 ### Open a terminal
 
