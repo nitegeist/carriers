@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
 import axios from 'axios';
+import Container from 'react-bootstrap/Container';
 import { Token, apiUrl, apiKey } from './config';
+import Loader from './components/Loader';
 import SearchForm from './components/SearchForm';
 import SearchResult from './components/SearchResult';
 
@@ -10,54 +11,76 @@ class App extends Component {
     super();
     this.state = {
       carriers: [],
-      location: '',
+      city: '',
+      state: '',
       radius: '',
+      loading: false,
     };
   }
+
+  setLoading = () => {
+    this.setState({ loading: true });
+  };
 
   handleSubmit = e => {
     e.preventDefault();
     e.target.reset();
-    const { location, radius } = this.state;
-    const getAddresses = async () => {
-      const data = location.split(',');
+    const { city, state, radius } = this.state;
+    let zipcode;
+    let adminAreas;
+
+    const getZipCode = async () => {
       try {
-        const result = await axios.post(
-          `http://www.mapquestapi.com/search/v2/radius?key=${apiKey}`,
-          { data, radius }
+        const result = await axios.get(
+          `https://bypasscors.herokuapp.com/api/?url=https://www.zipcodeapi.com/rest/${apiKey}/city-zips.json/${city}/${state}`
         );
-        return result;
+        zipcode = result.data.zip_codes;
       } catch (err) {
-        if (err) {
-          return data;
-        }
+        console.log(err);
       }
     };
 
-    getAddresses();
+    const getAddresses = async () => {
+      try {
+        await getZipCode();
+        const result = await axios.get(
+          `https://bypasscors.herokuapp.com/api/?url=https://www.zipcodeapi.com/rest/${apiKey}/radius.json/${
+            zipcode[0]
+          }/${radius}/mile`
+        );
+        adminAreas = result.data.zip_codes;
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-    // const getCarriers = async () => {
-    //   const addressData = await getAddresses();
-    //   const addresses = addressData;
-    //   const result = await axios
-    //     .post(
-    //       apiUrl,
-    //       {
-    //         addresses,
-    //       },
-    //       {
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //           Authorization: `Basic ${Token}`,
-    //         },
-    //       }
-    //     )
-    //     .then(res => this.setState({ carriers: res.data }))
-    //     .catch(err => console.log(err));
-    //   return result;
-    // };
+    const getCarriers = async () => {
+      try {
+        await getAddresses();
+        const addresses = adminAreas.map(area => `${area.city} ${area.state}`);
+        const result = await axios
+          .post(
+            apiUrl,
+            {
+              addresses,
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Basic ${Token}`,
+              },
+            }
+          )
+          .then(res => this.setState({ carriers: res.data }))
+          .catch(err => console.log(err));
+        this.setState({ loading: false });
+        return result;
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-    // getCarriers();
+    getCarriers();
   };
 
   handleChange = e => {
@@ -65,16 +88,19 @@ class App extends Component {
   };
 
   render() {
-    const { carriers } = this.state;
+    const { carriers, loading } = this.state;
     return (
-      <div className="App">
-        <h1 className="display-4">Welcome to Carrier Search!</h1>
+      <Container fluid>
+        <h1 className="display-3 mb-5 text-center">
+          Welcome to Carrier Search!
+        </h1>
         <SearchForm
+          setLoading={this.setLoading}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
         />
-        <SearchResult carriers={carriers} />
-      </div>
+        {loading === true ? <Loader /> : <SearchResult carriers={carriers} />}
+      </Container>
     );
   }
 }
